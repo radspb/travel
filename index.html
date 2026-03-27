@@ -3,38 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактивный Автогид: Азербайджан 2026</title>
-    
+    <title>Гранд-тур: Азербайджан 2026</title>
+   
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+   
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Tailwind Config for Custom Colors -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        sand: {
-                            50: '#fdfbf7',
-                            100: '#f7f3e8',
-                            200: '#eee5ce',
-                            800: '#5c4e32',
-                            900: '#4b3f29',
-                        },
-                        flame: {
-                            500: '#f97316',
-                            600: '#ea580c',
-                        },
-                        caspian: {
-                            600: '#0284c7',
-                            700: '#0369a1',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        gold: { 50: '#fdf8eb', 400: '#d4af37', 600: '#b8860b', 700: '#996515' },
+                        caspian: { 500: '#0077be', 700: '#005a8d' },
+                        stone: { 900: '#1c1917' }
                     }
                 }
             }
@@ -42,527 +26,334 @@
     </script>
 
     <style>
-        /* Base styling */
-        body {
-            background-color: #fdfbf7;
-            color: #333;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Chart Container Requirements */
         .chart-container {
             position: relative;
             width: 100%;
             max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto;
             height: 300px;
-            max-height: 400px;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f7f3e8; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
-
-        /* Interactive Elements transitions */
-        .route-btn {
-            transition: all 0.3s ease;
-        }
-        .route-btn.active {
-            background-color: #0369a1;
-            color: white;
-            transform: scale(1.02);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .route-btn:not(.active):hover {
-            background-color: #f1f5f9;
-            transform: translateY(-2px);
-        }
-        
-        /* Card hover effects */
-        .info-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .info-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
+        .day-active { border-left: 4px solid #b8860b; background-color: white; transform: translateX(8px); }
+        .transition-all { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-sand-50 font-sans text-stone-800">
+<body class="bg-stone-50 text-stone-900 font-sans leading-relaxed">
 
-    <!-- Chosen Palette: Warm Neutrals (Sand/Stone) as base to represent the landscape, Caspian Blue (sky/sea) for primary interactions, and Flame Orange for accents representing the Land of Fire. -->
-    
-    <!-- Application Structure Plan: 
-         1. Header/Hero: Establishes context and tone.
-         2. Overview & Preparations (Grid): Displays general driving rules and the trunk checklist side-by-side for quick reference before the trip.
-         3. Interactive Route Explorer (Dashboard approach): The core feature. Users select a route via tabs. The view dynamically updates to show step-by-step directions, coordinates, and a breakdown chart of distances. This prevents information overload and lets the user focus on one day at a time.
-         4. Mileage Analysis (Visualization): A comparative view showing total distances per day, helping the family understand which days are driving-heavy vs rest-heavy.
-    -->
-    
-    <!-- Visualization & Content Choices: 
-         - Driving Rules/Checklist -> Goal: Inform -> UI Cards with Unicode icons -> Justification: Easy to scan, distinct visual blocks.
-         - Route Specifics -> Goal: Organize/Interact -> Tabbed Dashboard + Dynamic List -> Justification: Keeps UI clean. Users only see details for the day they care about.
-         - Daily Segment Breakdown -> Goal: Compare -> Doughnut Chart (Chart.js) -> Justification: Visually shows which part of the day's drive is the longest. NO SVG used.
-         - Total Trip Mileage -> Goal: Compare/Analyze -> Bar Chart (Chart.js) -> Justification: Quickly reveals driving intensity across the 4 routes. NO SVG used.
-    -->
-    
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<!--
+    Chosen Palette: "Old City Gold & Caspian Blue".
+   
+    Application Structure Plan:
+    1. Обновленный таймлайн с учетом Hilton Baku и новых рекомендаций.
+    2. Раздел по отелям: конкретные варианты для Габалы и Шеки.
+    3. Подробный маршрут на каждый день с ресторанами.
+    4. Логистика: рекомендации по аренде авто.
+   
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+-->
 
-    <!-- Header -->
-    <header class="bg-white border-b border-sand-200 shadow-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4 sm:py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <header class="bg-stone-900 text-white py-10 px-6 shadow-2xl relative overflow-hidden">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center relative z-10">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-caspian-700 tracking-tight">🇦🇿 Автогид: Азербайджан</h1>
-                <p class="text-sm text-stone-500 mt-1">Семейное путешествие: 28 марта — 3 апреля 2026</p>
+                <h1 class="text-3xl md:text-5xl font-black tracking-tighter mb-2">АЗЕРБАЙДЖАН: ГРАНД-ТУР</h1>
+                <p class="text-gold-400 font-bold uppercase tracking-widest text-sm">28 Марта — 4 Апреля 2026</p>
             </div>
-            <div class="flex items-center gap-3 bg-sand-100 px-4 py-2 rounded-full border border-sand-200">
-                <span class="text-xl">🚙</span>
-                <span class="font-medium text-stone-700">Localrent SUV</span>
+            <div class="mt-6 md:mt-0 text-right">
+                <div class="bg-white/10 px-4 py-2 rounded-xl border border-white/20 inline-block text-xs uppercase font-bold">
+                    👨‍👩‍👧‍👦 2 взрослых + 2 детей
+                </div>
             </div>
         </div>
+        <div class="absolute right-[-5%] top-[-10%] text-[200px] opacity-10 select-none font-black italic">AZ</div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+    <main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
 
-        <!-- Intro Section -->
-        <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-sand-100">
-            <h2 class="text-xl font-bold text-stone-800 mb-3 border-b-2 border-flame-500 inline-block pb-1">Добро пожаловать в путь</h2>
-            <p class="text-stone-600 leading-relaxed text-lg">
-                Этот интерактивный дашборд создан для комфортного управления вашим автопутешествием. Здесь собрана вся необходимая информация из дорожной карты: от общих правил вождения в Азербайджане до детальных координат каждой остановки на вашем пути из Баку в горы Шахдага. Используйте навигацию ниже, чтобы планировать каждый день поездки.
-            </p>
+        <!-- Phase Navigation -->
+        <section class="flex flex-wrap justify-center gap-4">
+            <button onclick="showPhase('phase1')" id="btn-phase1" class="px-8 py-3 rounded-full font-bold text-sm uppercase tracking-widest bg-stone-900 text-white shadow-xl transition-all">I. Hilton Baku (28-31.03)</button>
+            <button onclick="showPhase('phase2')" id="btn-phase2" class="px-8 py-3 rounded-full font-bold text-sm uppercase tracking-widest bg-white text-stone-500 hover:bg-stone-100 transition-all shadow-sm">II. Авто-тур (31.03-03.04)</button>
+            <button onclick="showPhase('phase3')" id="btn-phase3" class="px-8 py-3 rounded-full font-bold text-sm uppercase tracking-widest bg-white text-stone-500 hover:bg-stone-100 transition-all shadow-sm">III. Гранд-финал (03-04.04)</button>
         </section>
 
-        <!-- Preparation & Rules Section -->
-        <section>
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-stone-800">Подготовка и Правила</h2>
-                <p class="text-stone-500 mt-1">Ключевая информация для безопасного вождения и комфорта в пути.</p>
+        <!-- Dynamic Content Section -->
+        <div id="content-area" class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+           
+            <!-- Sidebar: Navigation per day -->
+            <div class="lg:col-span-4 space-y-3" id="day-navigation">
+                <!-- Days will be injected via JS -->
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Driving Rules -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-sand-100 info-card flex flex-col h-full">
-                    <h3 class="text-lg font-bold text-caspian-700 mb-4 flex items-center gap-2">
-                        <span class="text-2xl">🚦</span> Правила на дорогах
-                    </h3>
-                    <ul class="space-y-4 flex-grow">
-                        <li class="flex items-start gap-3">
-                            <span class="text-flame-500 mt-1">📍</span>
-                            <div>
-                                <strong class="block text-stone-800">Навигация</strong>
-                                <span class="text-sm text-stone-600">Используйте <b>Waze</b> (отлично показывает камеры и пробки в Баку) или офлайн-карты Google Maps.</span>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-flame-500 mt-1">🅿️</span>
-                            <div>
-                                <strong class="block text-stone-800">Парковка</strong>
-                                <span class="text-sm text-stone-600">В центре Баку платная (через приложение <i>AzParking</i>). В отелях маршрута обычно включена.</span>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-flame-500 mt-1">⛽</span>
-                            <div>
-                                <strong class="block text-stone-800">Заправки</strong>
-                                <span class="text-sm text-stone-600">Надежные сети: <b>SOCAR</b> или <b>Azpetrol</b>. На трассах встречаются часто.</span>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-flame-500 mt-1">📷</span>
-                            <div>
-                                <strong class="block text-stone-800">Скоростной режим</strong>
-                                <span class="text-sm text-stone-600">Много камер! В городах 60 км/ч, на трассах до 110 км/ч.</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Main Display: Day Details -->
+            <div class="lg:col-span-8 bg-white rounded-3xl p-8 shadow-sm border border-stone-100 min-h-[500px]" id="day-details">
+                <!-- Details injected via JS -->
+            </div>
+        </div>
 
-                <!-- Trunk Checklist -->
-                <div class="bg-caspian-700 rounded-2xl p-6 shadow-sm text-white info-card flex flex-col h-full">
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                        <span class="text-2xl">🧺</span> Чек-лист для багажника
-                    </h3>
-                    <p class="text-caspian-100 text-sm mb-4">Обязательно проверьте наличие этих вещей в арендованном авто перед выездом.</p>
-                    
-                    <div class="grid grid-cols-2 gap-4 flex-grow">
-                        <div class="bg-caspian-600 rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                            <span class="text-3xl mb-2">💧</span>
-                            <span class="font-medium text-sm">Запас воды<br><span class="text-caspian-200 text-xs">(мин. 5 литров)</span></span>
-                        </div>
-                        <div class="bg-caspian-600 rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                            <span class="text-3xl mb-2">🕶️</span>
-                            <span class="font-medium text-sm">Солнцезащитные<br>очки <span class="text-caspian-200 text-xs">(для снега)</span></span>
-                        </div>
-                        <div class="bg-caspian-600 rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                            <span class="text-3xl mb-2">💵</span>
-                            <span class="font-medium text-sm">Наличные манаты<br><span class="text-caspian-200 text-xs">(вне городов)</span></span>
-                        </div>
-                        <div class="bg-caspian-600 rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                            <span class="text-3xl mb-2">🔋</span>
-                            <span class="font-medium text-sm">Зарядка для авто<br><span class="text-caspian-200 text-xs">(в прикуриватель)</span></span>
-                        </div>
-                    </div>
+        <!-- Accommodation Guide -->
+        <section class="bg-white rounded-3xl p-10 shadow-sm border border-stone-100">
+            <h2 class="text-3xl font-bold mb-8 text-center text-stone-900">Рекомендованные отели</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-stone-50 rounded-2xl border border-stone-200">
+                    <span class="bg-gold-600 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">Габала</span>
+                    <h4 class="font-bold text-xl mt-2">Qafqaz Riverside</h4>
+                    <p class="text-sm text-stone-500 mt-2">Лучший семейный отель в Габале. Есть отдельные коттеджи и большой SPA. Рядом с канаткой.</p>
+                </div>
+                <div class="p-6 bg-stone-50 rounded-2xl border border-stone-200">
+                    <span class="bg-gold-600 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">Шеки</span>
+                    <h4 class="font-bold text-xl mt-2">Sheki Saray Hotel</h4>
+                    <p class="text-sm text-stone-500 mt-2">Современный отель с отличным сервисом в самом центре древнего города. Прекрасные виды на горы.</p>
+                </div>
+                <div class="p-6 bg-stone-900 rounded-2xl text-white">
+                    <span class="bg-gold-400 text-stone-900 text-[10px] font-bold px-2 py-1 rounded uppercase">Баку (Финал)</span>
+                    <h4 class="font-bold text-xl mt-2">Fairmont Baku</h4>
+                    <p class="text-sm text-stone-400 mt-2">Ночевка в «Пламенных башнях». Самый эффектный вид на ночной город для прощального вечера.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Interactive Route Explorer -->
-        <section>
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-stone-800">Интерактивный Навигатор Маршрутов</h2>
-                <p class="text-stone-500 mt-1">Выберите день для просмотра детального плана, координат и расстояний.</p>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-sm border border-sand-100 overflow-hidden">
-                
-                <!-- Route Tabs -->
-                <div class="flex flex-wrap border-b border-sand-200 bg-sand-50" id="route-tabs">
-                    <!-- Buttons injected via JS -->
+        <!-- Food Section -->
+        <section class="bg-white rounded-3xl p-10 shadow-sm border border-stone-100">
+            <h2 class="text-3xl font-bold mb-8 text-center">Где вкусно поесть</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <div class="text-4xl">🥘</div>
+                    <h4 class="font-bold text-xl">Shirvanshah Museum</h4>
+                    <p class="text-sm text-stone-500">Ресторан-музей. <strong>Заказывайте:</strong> Шах-плов и кебаб из осетрины под аккомпанемент мугама.</p>
                 </div>
-
-                <!-- Route Content Area -->
-                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-8">
-                    
-                    <!-- Left Column: Route Details -->
-                    <div class="lg:col-span-3 space-y-6">
-                        <div class="flex items-center justify-between border-b pb-4">
-                            <div>
-                                <span id="display-date" class="text-sm font-bold tracking-wider text-flame-600 uppercase">Дата</span>
-                                <h3 id="display-title" class="text-2xl font-bold text-stone-800 mt-1">Название Маршрута</h3>
-                            </div>
-                            <div class="text-right bg-sand-100 px-4 py-2 rounded-lg">
-                                <span class="block text-sm text-stone-500">В пути</span>
-                                <span id="display-time" class="font-bold text-caspian-700">0 часов</span>
-                            </div>
-                        </div>
-
-                        <p id="display-desc" class="text-stone-600 font-medium italic"></p>
-                        
-                        <div id="display-notes" class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl text-sm text-stone-700 hidden">
-                            <!-- Special notes like off-road warnings injected here -->
-                        </div>
-
-                        <!-- Step-by-step list -->
-                        <div class="relative pl-4 border-l-2 border-caspian-200 space-y-6 mt-6" id="display-steps">
-                            <!-- Steps injected via JS -->
-                        </div>
-                    </div>
-
-                    <!-- Right Column: Visuals -->
-                    <div class="lg:col-span-2 flex flex-col justify-center items-center bg-sand-50 rounded-2xl p-6 border border-sand-100">
-                        <h4 class="text-center font-bold text-stone-700 mb-4 w-full">Распределение дистанции (км)</h4>
-                        <div class="chart-container w-full aspect-square">
-                            <canvas id="routeDoughnutChart"></canvas>
-                        </div>
-                        <p class="text-center text-sm text-stone-500 mt-4">Визуализация отрезков пути выбранного маршрута.</p>
-                    </div>
-
+                <div class="space-y-4">
+                    <div class="text-4xl">🍵</div>
+                    <h4 class="font-bold text-xl">Qaynana (Ичери-Шехер)</h4>
+                    <p class="text-sm text-stone-500">Лучшие завтраки и кутабы. Атмосфера старинного бакинского дома. Обязательно чай в армуду.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="text-4xl">🍣</div>
+                    <h4 class="font-bold text-xl">Chinar</h4>
+                    <p class="text-sm text-stone-500">Стильное место для подростков. Паназиатская кухня мирового уровня в модном интерьере.</p>
                 </div>
             </div>
         </section>
 
         <!-- Analytics Section -->
-        <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-sand-100 mb-8">
-            <h2 class="text-2xl font-bold text-stone-800 mb-2">Анализ Автопробега</h2>
-            <p class="text-stone-500 mb-6">Сравнение общего пробега по дням для планирования отдыха водителя.</p>
-            
-            <div class="chart-container">
-                <canvas id="mileageBarChart"></canvas>
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100">
+                <h4 class="font-bold text-center mb-6">Распределение активностей (%)</h4>
+                <div class="chart-container">
+                    <canvas id="typeChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100">
+                <h4 class="font-bold text-center mb-6">Пробег авто (км)</h4>
+                <div class="chart-container">
+                    <canvas id="mileageChart"></canvas>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-stone-900 text-stone-400 py-8 mt-12">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <p class="mb-2">🗺️ Интерактивный дорожный справочник Азербайджана</p>
-            <p class="text-sm">Основано на маршрутном листе для семьи (Март-Апрель 2026)</p>
+    <footer class="bg-stone-900 text-stone-400 py-16 px-6 text-center">
+        <div class="max-w-xl mx-auto space-y-4">
+            <p class="text-sm uppercase tracking-widest font-bold text-gold-400">Азербайджан ждет вас</p>
+            <p>Маршрут составлен с учетом интересов детей и комфорта родителей.</p>
         </div>
     </footer>
 
-    <!-- Application Logic -->
     <script>
-        // 1. Data Store: Structured data from the Source Report
-        const routesData = [
-            {
-                id: 'route1',
-                tabName: 'День 1',
-                date: '30 марта',
-                title: 'Маршрут 1: Апшеронское кольцо',
-                desc: 'Баку — Гобустан — Грязевые вулканы — Атешгях — Янардаг — Баку',
-                totalTime: '~3-4 часа',
-                specialNote: '⚠️ Дорога к грязевым вулканам грунтовая. В случае дождя воспользуйтесь услугами местных водителей на "Нивах" у музея Гобустана (20-30 манат).',
-                steps: [
-                    { from: 'Баку', to: 'Гобустан', dist: 65, distLabel: '65 км', time: '~1 час', coords: '40.1118, 49.3695', note: 'Отличное шоссе (E119)' },
-                    { from: 'Гобустан', to: 'Грязевые вулканы', dist: 10, distLabel: '10 км', time: '~20 мин', coords: '40.0354, 49.3789', note: 'Грунтовая дорога' },
-                    { from: 'Грязевые вулканы', to: 'Атешгях', dist: 80, distLabel: '80 км', time: '~1.5 часа', coords: '40.4521, 50.0085', note: 'Возврат через пр. Гейдара Алиева' },
-                    { from: 'Атешгях', to: 'Янардаг', dist: 15, distLabel: '15 км', time: '~25 мин', coords: '40.5019, 49.8912', note: 'Короткий переезд' }
-                ]
+        const phases = {
+            phase1: {
+                days: [
+                    {
+                        title: "28 Марта: Прибытие",
+                        subtitle: "Hilton Baku: Начало люкса",
+                        desc: "Прилет и заселение в <strong>Hilton Baku</strong>. После отдыха — прогулка по Бульвару. Вечером поднимитесь в <i>360 Bar</i> на крыше Hilton для панорамного обзора. <br><br><strong>Ужин:</strong> Ресторан <i>Sahil</i> (на набережной) — классика и вид на море.",
+                        activity: "🎡 Колесо обозрения и прогулка у моря.",
+                        forKids: "7 лет: Малая Венеция. 15 лет: Виды с 25-го этажа Hilton."
+                    },
+                    {
+                        title: "29 Марта: Дух истории",
+                        subtitle: "Старый город и сувениры",
+                        desc: "Ичери-Шехер. Посетите Дворец Ширваншахов и Девичью башню. Найдите место 'Черт побери!'. <br><br><strong>Обед:</strong> Ресторан <i>Qaynana</i>. <strong>Ужин:</strong> Ресторан <i>Shirvanshah Museum</i>.",
+                        activity: "🧗 Подъем на Девичью башню и Музей Ковра.",
+                        forKids: "7 лет: Музей миниатюрной книги. 15 лет: Лавки с антиквариатом."
+                    },
+                    {
+                        title: "30 Марта: Футуризм",
+                        subtitle: "Центр Алиева",
+                        desc: "Центр Гейдара Алиева — архитектурный шедевр. Внутри отличный музей ретро-автомобилей. <br><br><strong>Обед:</strong> <i>Paul Baku</i> (рядом с Port Baku). <strong>Ужин:</strong> <i>Chinar</i> (модно и вкусно).",
+                        activity: "📸 Фотосессия у Центра Алиева и Нагорный парк.",
+                        forKids: "7 лет: Скульптуры 'Зайцы'. 15 лет: Ретро-автопарк внутри центра."
+                    }
+                ],
+                mileage: [10, 5, 12]
             },
-            {
-                id: 'route2',
-                tabName: 'День 2',
-                date: '31 марта',
-                title: 'Маршрут 2: Путь в горы (Шахдаг)',
-                desc: 'Баку ➔ гора Бешбармаг ➔ Гусар ➔ Shahdag Mountain Resort',
-                totalTime: '~3 часа 30 мин',
-                specialNote: '🏔️ В марте на горном серпантине утром возможен гололед. Проверьте зимнюю резину. До Гусара трасса скоростная.',
-                steps: [
-                    { from: 'Баку', to: 'гора Бешбармаг', dist: 90, distLabel: '90 км', time: '~1 час 15 мин', coords: '40.9576, 49.2291', note: 'Парковка и кафе у подножья' },
-                    { from: 'Бешбармаг', to: 'Гусар (поворот)', dist: 90, distLabel: '90 км', time: '~1 час 15 мин', coords: 'Трасса M1', note: 'Движение через Сиязань и Шабран' },
-                    { from: 'Гусар', to: 'Шахдаг', dist: 30, distLabel: '30 км', time: '~1 час', coords: 'По указателям', note: 'Горный серпантин (хороший асфальт)' }
-                ]
+            phase2: {
+                days: [
+                    {
+                        title: "31 Марта: В горы!",
+                        subtitle: "Баку ➔ Шемаха ➔ Габала",
+                        desc: "Выезд из Hilton. Берем авто (рекомендую Toyota Prado или Hyundai Santa Fe). Остановка в Шемахе (Джума-мечеть). Прибытие в <strong>Qafqaz Riverside</strong>. <br><br><strong>Обед:</strong> Местные кебабы в лесной зоне Шемахи.",
+                        activity: "🛣️ Живописный перевал через леса.",
+                        forKids: "7 лет: Озеро Нохур. 15 лет: Квадроциклы в лесу."
+                    },
+                    {
+                        title: "1 Апреля: Габала Драйв",
+                        subtitle: "Tufandag и аттракционы",
+                        desc: "Подъем на канатке Tufandag (4 уровня). Визит в Shooting Club. Вечер в парке Gabaland. <br><br><strong>Ужин:</strong> <i>Gabala Garden</i>.",
+                        activity: "🏹 Стрельба и горные качели на вершине.",
+                        forKids: "7 лет: Парк Gabaland. 15 лет: Профессиональная стрельба."
+                    },
+                    {
+                        title: "2 Апреля: Шеки",
+                        subtitle: "Дворцы и сладости",
+                        desc: "Переезд в Шеки (1.5 часа). Дворец Шекинских ханов, Караван-сарай. Заселение в <strong>Sheki Saray</strong>. <br><br><strong>Обед:</strong> <i>Gagarin</i> (обязательно попробуйте 'Пити').",
+                        activity: "🍯 Дегустация шекинской пахлавы у Али Ахмеда.",
+                        forKids: "7 лет: Витражи Шебеке. 15 лет: Подземелья Караван-сарая."
+                    }
+                ],
+                mileage: [215, 30, 90]
             },
-            {
-                id: 'route3',
-                tabName: 'День 3',
-                date: '1 апреля',
-                title: 'Маршрут 3: Высокогорная Лаза',
-                desc: 'Отель Шахдаг ➔ Село Лаза',
-                totalTime: 'Короткая поездка + прогулка',
-                specialNote: '🥾 Дорога короткая, но крутая. Оставьте машину на въезде и прогуляйтесь пешком к водопадам (5-10 мин). Отлично для детей.',
-                steps: [
-                    { from: 'Шахдаг', to: 'Село Лаза', dist: 5, distLabel: '5 км', time: '~15 мин', coords: '41.2965, 48.1147', note: 'Крутой спуск/подъем в ущелье. Парковка на въезде.' }
-                ]
-            },
-            {
-                id: 'route4',
-                tabName: 'День 4',
-                date: '2 апреля',
-                title: 'Маршрут 4: Красная Слобода и Гячреш',
-                desc: 'Шахдаг ➔ Губа ➔ лес Гячреш ➔ Баку',
-                totalTime: '~4 часа',
-                specialNote: '⏱️ Рекомендуется выезжать в Баку не позднее 16:00, чтобы избежать плотного трафика на въезде в столицу.',
-                steps: [
-                    { from: 'Шахдаг', to: 'Губа (Кр. Слобода)', dist: 30, distLabel: '30 км', time: '~40 мин', coords: '41.3712, 48.5147', note: 'Спуск в центр. Прогулка пешком.' },
-                    { from: 'Губа', to: 'Лес Гячреш', dist: 12, distLabel: '12 км', time: '~20 мин', coords: '41.3852, 48.4231', note: 'Дорога уходит вглубь леса к реке.' },
-                    { from: 'Гячреш', to: 'Баку', dist: 180, distLabel: '180 км', time: '~2.5 часа', coords: 'Трасса M1', note: 'Возврат по основной скоростной трассе.' }
-                ]
+            phase3: {
+                days: [
+                    {
+                        title: "3 Апреля: Гобустан",
+                        subtitle: "Грязевые вулканы ➔ Баку",
+                        desc: "Возвращение в Баку (4 часа). По пути заезжаем в Гобустан (петроглифы) и к грязевым вулканам. Финальная точка — отель <strong>Fairmont Flame Towers</strong>. <br><br><strong>Ужин:</strong> <i>Art Club</i> в Старом городе.",
+                        activity: "🌋 Офф-роуд к бурлящим грязевым вулканам.",
+                        forKids: "7 лет: Рисунки на камнях. 15 лет: Джип-сафари к вулканам."
+                    },
+                    {
+                        title: "4 Апреля: Базар и Вылет",
+                        subtitle: "Яшил Базар",
+                        desc: "Утренний заезд на Яшил Базар за черной икрой, шафраном и гранатовым соусом. Сдача авто в аэропорту.",
+                        activity: "🛍️ Закупка деликатесов.",
+                        forKids: "7 лет: Пробовать фрукты. 15 лет: Торговаться с продавцами."
+                    }
+                ],
+                mileage: [320, 25]
             }
-        ];
+        };
 
-        // 2. State Management
-        let currentRouteId = routesData[0].id;
-        let doughnutChartInstance = null;
-        let barChartInstance = null;
+        let currentPhase = 'phase1';
+        let currentDayIdx = 0;
+        let typeChart, mileageChart;
 
-        // 3. Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTabs();
-            renderRouteContent(currentRouteId);
-            initBarChart();
-        });
-
-        // 4. Core Functions
-
-        // Render Navigation Tabs
-        function renderTabs() {
-            const tabsContainer = document.getElementById('route-tabs');
-            tabsContainer.innerHTML = '';
-            
-            routesData.forEach(route => {
-                const btn = document.createElement('button');
-                btn.className = `route-btn flex-1 py-4 px-2 text-center font-medium border-r border-sand-200 last:border-r-0 focus:outline-none ${route.id === currentRouteId ? 'active' : 'text-stone-600'}`;
-                btn.innerHTML = `<span class="block text-xs uppercase opacity-75">${route.tabName}</span><span class="block mt-1">${route.date}</span>`;
-                btn.onclick = () => {
-                    currentRouteId = route.id;
-                    updateTabsStyle();
-                    renderRouteContent(currentRouteId);
-                };
-                tabsContainer.appendChild(btn);
+        function showPhase(phaseId) {
+            currentPhase = phaseId;
+            currentDayIdx = 0;
+           
+            document.querySelectorAll('section button').forEach(btn => {
+                btn.classList.remove('bg-stone-900', 'text-white', 'shadow-xl');
+                btn.classList.add('bg-white', 'text-stone-500');
             });
+            document.getElementById('btn-' + phaseId).classList.add('bg-stone-900', 'text-white', 'shadow-xl');
+            document.getElementById('btn-' + phaseId).classList.remove('bg-white', 'text-stone-500');
+
+            renderNavigation();
+            updateDayDetails(0);
+            updateCharts();
         }
 
-        function updateTabsStyle() {
-            const buttons = document.querySelectorAll('.route-btn');
-            buttons.forEach((btn, index) => {
-                if (routesData[index].id === currentRouteId) {
-                    btn.classList.add('active');
-                    btn.classList.remove('text-stone-600');
-                } else {
-                    btn.classList.remove('active');
-                    btn.classList.add('text-stone-600');
-                }
-            });
+        function renderNavigation() {
+            const nav = document.getElementById('day-navigation');
+            nav.innerHTML = phases[currentPhase].days.map((day, idx) => `
+                <div onclick="updateDayDetails(${idx})" id="nav-day-${idx}" class="day-card p-5 rounded-2xl border border-stone-200 cursor-pointer transition-all hover:bg-white ${idx === 0 ? 'day-active' : 'bg-white/50'}">
+                    <span class="text-[10px] font-bold text-gold-600 uppercase tracking-widest">День ${idx + 1}</span>
+                    <h5 class="font-bold text-stone-800">${day.title}</h5>
+                </div>
+            `).join('');
         }
 
-        // Render Dynamic Content based on selected route
-        function renderRouteContent(routeId) {
-            const route = routesData.find(r => r.id === routeId);
-            
-            // Text updates
-            document.getElementById('display-date').textContent = route.date;
-            document.getElementById('display-title').textContent = route.title;
-            document.getElementById('display-time').textContent = route.totalTime;
-            document.getElementById('display-desc').textContent = route.desc;
-            
-            const notesEl = document.getElementById('display-notes');
-            if (route.specialNote) {
-                notesEl.innerHTML = `<strong>Обратите внимание:</strong> ${route.specialNote}`;
-                notesEl.classList.remove('hidden');
-            } else {
-                notesEl.classList.add('hidden');
-            }
+        function updateDayDetails(idx) {
+            currentDayIdx = idx;
+            const day = phases[currentPhase].days[idx];
+           
+            document.querySelectorAll('.day-card').forEach(c => c.classList.remove('day-active', 'bg-white'));
+            const activeNav = document.getElementById('nav-day-' + idx);
+            if(activeNav) activeNav.classList.add('day-active', 'bg-white');
 
-            // Steps generation
-            const stepsContainer = document.getElementById('display-steps');
-            stepsContainer.innerHTML = '';
-            
-            route.steps.forEach((step, index) => {
-                const isLast = index === route.steps.length - 1;
-                const stepHTML = `
-                    <div class="relative">
-                        <!-- Connector dot -->
-                        <span class="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-caspian-600 border-2 border-white shadow-sm ring-2 ring-caspian-200"></span>
-                        <div class="bg-white border border-sand-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex justify-between items-start mb-2">
-                                <h5 class="font-bold text-stone-800 text-lg">${step.from} ➔ ${step.to}</h5>
-                                <span class="bg-sand-100 text-caspian-700 text-xs font-bold px-2 py-1 rounded">${step.distLabel}</span>
+            const details = document.getElementById('day-details');
+            details.style.opacity = 0;
+           
+            setTimeout(() => {
+                details.innerHTML = `
+                    <div class="fade-in space-y-6">
+                        <div class="border-b border-stone-100 pb-4">
+                            <h3 class="text-3xl font-black text-stone-900">${day.title}</h3>
+                            <p class="text-gold-600 font-bold uppercase text-sm mt-1">${day.subtitle}</p>
+                        </div>
+                        <p class="text-stone-600 text-lg">${day.desc}</p>
+                        <div class="bg-stone-50 p-6 rounded-2xl border border-stone-100">
+                            <h4 class="font-bold text-stone-900 mb-2 flex items-center gap-2">
+                                <span>🚀</span> В фокусе:
+                            </h4>
+                            <p class="text-stone-700 font-medium">${day.activity}</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-blue-50 rounded-xl text-sm border border-blue-100">
+                                <strong class="block text-blue-800 mb-1">👧 Дочка (7 лет):</strong>
+                                <span class="text-blue-600 leading-snug">${day.forKids.split('15 лет:')[0].replace('7 лет:', '').trim()}</span>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-stone-600 mt-2">
-                                <p><span class="mr-1">⏱️</span> Время: <strong>${step.time}</strong></p>
-                                <p class="font-mono text-xs bg-sand-50 p-1 rounded inline-block w-max"><span class="mr-1">🧭</span> ${step.coords}</p>
+                            <div class="p-4 bg-orange-50 rounded-xl text-sm border border-orange-100">
+                                <strong class="block text-orange-800 mb-1">🧑 Сын (15 лет):</strong>
+                                <span class="text-orange-600 leading-snug">${day.forKids.includes('15 лет:') ? day.forKids.split('15 лет:')[1].trim() : ''}</span>
                             </div>
-                            <p class="text-sm mt-3 pt-3 border-t border-sand-100 text-stone-500"><span class="text-flame-500 mr-1">ℹ️</span> ${step.note}</p>
                         </div>
                     </div>
                 `;
-                stepsContainer.innerHTML += stepHTML;
-            });
-
-            // Update Doughnut Chart
-            updateDoughnutChart(route);
+                details.style.opacity = 1;
+            }, 100);
         }
 
-        // Initialize and Update Doughnut Chart (Chart.js)
-        function updateDoughnutChart(route) {
-            const ctx = document.getElementById('routeDoughnutChart').getContext('2d');
-            
-            const labels = route.steps.map(s => `${s.from} - ${s.to}`);
-            const dataPoints = route.steps.map(s => s.dist);
-            
-            // Caspian and Flame inspired palette
-            const bgColors = [
-                '#0284c7', // caspian-600
-                '#ea580c', // flame-600
-                '#0ea5e9', // sky-500
-                '#fcd34d', // amber-300
-                '#94a3b8'  // slate-400
-            ];
+        function updateCharts() {
+            const mileageData = phases[currentPhase].mileage;
+            const labels = phases[currentPhase].days.map((_, i) => `День ${i+1}`);
 
-            if (doughnutChartInstance) {
-                doughnutChartInstance.destroy();
-            }
-
-            doughnutChartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: dataPoints,
-                        backgroundColor: bgColors.slice(0, dataPoints.length),
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '65%',
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                font: { family: "'Segoe UI', sans-serif", size: 12 },
-                                color: '#57534e'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return ` ${context.label}: ${context.raw} км`;
-                                }
-                            },
-                            backgroundColor: 'rgba(28, 25, 23, 0.9)',
-                            padding: 12,
-                            cornerRadius: 8
-                        }
-                    }
-                }
-            });
-        }
-
-        // Initialize Bar Chart for total mileage (Chart.js)
-        function initBarChart() {
-            const ctx = document.getElementById('mileageBarChart').getContext('2d');
-            
-            // Calculate total distances per route
-            const totalDistances = routesData.map(route => {
-                return route.steps.reduce((sum, step) => sum + step.dist, 0);
-            });
-            const labels = routesData.map(r => r.tabName + ' (' + r.date + ')');
-
-            barChartInstance = new Chart(ctx, {
+            if (mileageChart) mileageChart.destroy();
+            const mCtx = document.getElementById('mileageChart').getContext('2d');
+            mileageChart = new Chart(mCtx, {
                 type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Общий пробег за день (км)',
-                        data: totalDistances,
-                        backgroundColor: '#0369a1', // caspian-700
-                        borderRadius: 6,
-                        hoverBackgroundColor: '#ea580c' // flame-600
+                        label: 'Пробег (км)',
+                        data: mileageData,
+                        backgroundColor: '#b8860b',
+                        borderRadius: 8
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#e7e5e4', borderDash: [5, 5] },
-                            ticks: { color: '#78716c', font: {family: "'Segoe UI', sans-serif"} },
-                            title: { display: true, text: 'Километры', color: '#78716c' }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#57534e', font: {family: "'Segoe UI', sans-serif", weight: 'bold'} }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(28, 25, 23, 0.9)',
-                            padding: 12,
-                            cornerRadius: 8,
-                            callbacks: {
-                                label: function(context) {
-                                    return ` Пробег: ${context.raw} км`;
-                                }
-                            }
-                        }
-                    }
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
                 }
             });
+
+            if (typeChart) typeChart.destroy();
+            const tCtx = document.getElementById('typeChart').getContext('2d');
+            typeChart = new Chart(tCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Культура', 'Актив', 'Релакс', 'Природа'],
+                    datasets: [{
+                        data: currentPhase === 'phase2' ? [20, 40, 20, 20] : [50, 20, 20, 10],
+                        backgroundColor: ['#1c1917', '#b8860b', '#ed2b2a', '#0077be'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        window.onload = function() {
+            showPhase('phase1');
         }
     </script>
 </body>
